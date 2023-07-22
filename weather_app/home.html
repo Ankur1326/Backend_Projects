@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- <link rel="stylesheet" href="./css/style.css"> -->
+  <!-- <link rel="stylesheet" href="./css/wave.css"> -->
+  <title>Weather App</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e8e8e8;
+      font-family: 'Quicksand', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    .box {
+      width: 340px;
+      height: 500px;
+      border-radius: 20px;
+      /* background-color: rgb(89, 33, 67); */
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 99;
+      /* color: #fff; */
+    }
+
+    .weathercon i {
+      /* width: 130px; */
+      font-size: 5rem;
+    }
+
+    .info {
+      /* clear: both; */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .info h2 {
+      font-size: 2.2rem;
+    }
+
+    .info p {
+      margin-bottom: 2rem;
+      opacity: .8;
+    }
+
+    .info h3 {
+      margin-bottom: 2rem;
+      opacity: .6;
+    }
+
+    /* wave  */
+    @keyframes move_wave {
+    0% {
+        transform: translateX(0) translateZ(0) scaleY(1)
+    }
+    50% {
+        transform: translateX(-25%) translateZ(0) scaleY(0.55)
+    }
+    100% {
+        transform: translateX(-50%) translateZ(0) scaleY(1)
+    }
+}
+.waveWrapper {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    z-index: -99;
+    border-radius: 15px;
+}
+.waveWrapperInner {
+    position: absolute;
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    bottom: -1px;
+    background-image: linear-gradient(to top, #ee76de 20%, #353535 80%);
+}
+.bgTop {
+    z-index: 15;
+    opacity: 0.5;
+    background-color: aquamarine;
+}
+.bgMiddle {
+    z-index: 10;
+    opacity: 0.75;
+}
+.bgBottom {
+    z-index: 5;
+}
+.wave {
+    position: absolute;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background-repeat: repeat no-repeat;
+    background-position: 0 bottom;
+    transform-origin: center bottom;
+}
+.waveTop {
+    background-size: 50% 100px;
+}
+.waveAnimation .waveTop {
+  animation: move-wave 3s;
+   -webkit-animation: move-wave 3s;
+   -webkit-animation-delay: 1s;
+   animation-delay: 1s;
+}
+.waveMiddle {
+    background-size: 50% 120px;
+}
+.waveAnimation .waveMiddle {
+    animation: move_wave 10s linear infinite;
+}
+.waveBottom {
+    background-size: 350% 440px;
+}
+.waveAnimation .waveBottom {
+    animation: move_wave 15s linear infinite;
+}  
+    
+  </style>
+
+</head>
+
+<body>
+  <div class="box">
+    <div class="weathercon">
+      <i class="fa-solid fa-sun" style="color: #eccc68;"></i>
+      
+    </div>
+
+    <div class="waveWrapper waveAnimation">
+      <div class="waveWrapperInner bgTop">
+        <div class="wave waveTop" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-top.png')">
+        </div>
+      </div>
+      <div class="waveWrapperInner bgMiddle">
+        <div class="wave waveMiddle" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-mid.png')">
+        </div>
+      </div>
+      <div class="waveWrapperInner bgBottom">
+        <div class="wave waveBottom" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-bot.png')">
+        </div>
+      </div>
+    </div>
+
+
+    <div class="info">
+      <h2 class="location">
+        <i class="fa-solid fa-street-view"></i>
+        {%location%},{%country%}
+      </h2>
+      <p id="date">WED | OCT 23 | 10:49AM</p>
+      <h1 class="temp">{%tempval%}</h1>
+      <h3 class="tempmin_max">Min {%tempmin%}&deg;C | Max {%tempmax%}&deg;C</h3>
+    </div>
+  </div>
+
+  <!-- <script src="./app.js"></script> -->
+  <script>
+    const curDate = document.getElementById('date')
+    let weathercon = document.querySelector(".weathercon");
+
+    const tempStatus = "{%tempstatus%}";
+    console.log(tempStatus);
+    if (tempStatus == "Sunny") {
+      weathercon.innerHTML = '<i class="fa-solid fa-sun" style="color: #eccc68;"></i>'
+    } 
+    else if (tempStatus == "Clouds") {
+      weathercon.innerHTML = "<i class='fas fa-cloud' style='color: #f1f2f6;'></i>";
+    } 
+    else if (tempStatus == "Rain") {
+      weathercon.innerHTML = '<i class="fas fa-cloud-rain" style="color: #a4b0be;"></i>';
+    } 
+    else {
+      weathercon.innerHTML = "<i class='fas fa-cloud' style='color: #44c3de;'></i>";
+    }
+        
+    (() => {
+      let currentTime = new Date()
+
+      let weekday = new Array(7)
+      weekday[0] = "Sunday"
+      weekday[1] = "Monday"
+      weekday[2] = "Tuesday"
+      weekday[3] = "Wednesday"
+      weekday[4] = "Thursday"
+      weekday[5] = "Friday"
+      weekday[6] = "Saturday"
+
+      let month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+      month
+      console.log(weekday[currentTime.getDay()]);
+      console.log(currentTime.getHours());
+
+      let hours = currentTime.getHours();
+      let mins = currentTime.getMinutes();
+
+      let perios = "AM";
+      if (hours > 11) {
+        perios = "PM"
+        if (hours > 12) {
+          hours -= 12;
+        }
+      }
+      if (mins < 10) {
+        mins = "0" + mins;
+      }
+
+      curDate.innerHTML = `${weekday[currentTime.getDay()]} |  ${month[currentTime.getMonth()]} ${currentTime.getDate()} | ${hours}:${mins}${perios}`;
+    })();
+
+  </script>
+</body>
+
+</html>
