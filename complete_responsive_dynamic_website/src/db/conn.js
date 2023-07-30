@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/DynWebSiteThapa', {
+const DATABASE_URL = process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/DynWebSiteThapa"
+
+mongoose.connect(DATABASE_URL, {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true
